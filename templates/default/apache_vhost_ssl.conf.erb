@@ -1,0 +1,26 @@
+<VirtualHost *:80>
+  ServerName <%= @params[:server_name] %>
+  DocumentRoot <%= @params[:docroot] %>
+  ServerSignature Off
+
+  LogLevel info
+  ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
+  CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
+</VirtualHost>
+
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+  ServerName <%= @params[:server_name] %>
+  DocumentRoot <%= @params[:docroot] %>
+  ServerSignature Off
+
+  SSLEngine On
+<% @params[:ssl_params].each do |param, value| -%>
+  <%= param %> <%= value %>
+<% end -%>
+
+  LogLevel info
+  ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-error.log
+  CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-access.log combined
+</VirtualHost>
+</IfModule>
