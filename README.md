@@ -22,17 +22,15 @@ The following packages are installed by this cookbook:
 Attributes
 ----------
 #### prestashop::default
-- `node['prestashop']['base_dir']` - directory where Prestashop will be installed
+- `node['prestashop']['base_dir']` - directory where Prestashop will be installed (default /var/www/prestashop)
 - `node['prestashop']['default_admin_dir']` - name of default admin directory
 - `node['prestashop']['custom_admin_dir']` - new name for admin directory (default 'store-admin-' + rand(1000..9999).to_s)
 - `node['prestashop']['install_dir']` - name of default install directory
 - `node['prestashop']['settings_file']` - path to config file (default 'config/settings.inc.php')
 - `node['prestashop']['dir_owner']` - owner of installation directory (default 'www-data')
 - `node['prestashop']['dir_group']` - group of installation directory (default 'www-data')
-- `node['prestashop']['old_downloads_url_prefix']` - URL to get several Prestashop versions (default 'http://www.prestashop.com/download/old/')
+- `node['prestashop']['old_downloads_url_prefix']` - URL to get several Prestashop versions (default 'http://www.prestashop.com/download/old')
 - `node['prestashop']['version']` - Prestashop version to install (default '1.6.0.8')
-- `node['prestashop']['zip_file']` - Prestashop zip file name
-- `node['prestashop']['full_download_url']` - full URL to get a specific Prestashop version
 - `node['prestashop']['db_server']` - address of database server to use (default '127.0.0.1')
 - `node['prestashop']['db_name']` - database name to use (default 'prestashop_db')
 - `node['prestashop']['db_user']` - database user (default 'prestashop_user')
@@ -76,12 +74,31 @@ Just include `prestashop` in your node's `run_list`:
 When using from another cookbook, you can override several attributes according to your needs. For example:
 
 ```
+node.default['prestashop']['db_name'] = 'my_custom_database'
+node.default['prestashop']['install_cli_options']['db_name'] = 'my_custom_database'
 node.default['prestashop']['install_cli_options']['language'] = 'it'
 node.default['prestashop']['install_cli_options']['country'] = 'it'
 node.default['prestashop']['install_cli_options']['domain'] = 'www.myotherdomain.com'
 node.default['prestashop']['install_cli_options']['name'] = 'MyAwesomeStore'
 node.default['prestashop']['version'] = '1.5.6.2'
 ```
+
+When using chef-client executable with an attribute file in JSON format, for example `chef-client -o 'recipe[prestashop]' -j my-file.json`, such JSON file could be like this:
+
+```
+{
+  "prestashop": {
+    "base_dir": "/var/www/prestashop1.5",
+    "db_name": "ps15_db",
+    "install_cli_options": {
+      "db_name": "ps15_db"
+    },
+    "version": "1.5.6.2"
+  }
+}
+```
+
+Notice that right now there is a (needed) redundancy with some attributes present in the `install_cli_options` hash, like `db_name`. This is because Chef evaluates the attributes values too early and if not rewriteen then some values could be wrong for this cookbook. This is a point to improve for this cookbook.
 
 Contributing
 ------------

@@ -40,18 +40,15 @@ already_installed = File.exists?(settings_file)
 bash 'get-prestashop-core' do
   user node['prestashop']['dir_owner']
   group node['prestashop']['dir_group']
-  cwd Chef::Config[:file_cache_path]
-  zip_file = 'prestashop_' + node['prestashop']['version'] + '.zip'
-  zip_file = node['prestashop']['zip_file']
-  full_download_url = node['prestashop']['full_download_url']
   code <<-EOH
     tmp_dir=$(mktemp -d)
-    #wget --continue --quiet #{full_download_url} && unzip -o #{zip_file} -d $tmp_dir && rm #{zip_file}
-    wget --continue --quiet #{full_download_url} && unzip -o #{zip_file} -d $tmp_dir
+    cd $tmp_dir
+    wget --quiet #{node['prestashop']['old_downloads_url_prefix']}/prestashop_#{node['prestashop']['version']}.zip
+    unzip -o prestashop_#{node['prestashop']['version']}.zip
     # no hidden files downloaded, so it is safe to use mv
-    mv $tmp_dir/prestashop/* #{base_dir}
-    rm -rf $tmp_dir
+    mv prestashop/* #{base_dir}
     mv #{default_admin_dir} #{custom_admin_dir}
+    rm -rf prestashop/
   EOH
   not_if {already_installed == true}
 end

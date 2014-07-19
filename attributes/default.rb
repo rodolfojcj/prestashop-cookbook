@@ -18,7 +18,7 @@
 #
 
 #
-default['prestashop']['base_dir'] = '/tmp/var/www/prestashop'
+default['prestashop']['base_dir'] = '/var/www/prestashop'
 default['prestashop']['default_admin_dir'] = 'admin'
 default['prestashop']['custom_admin_dir'] = 'store-admin-' + rand(1000..9999).to_s
 default['prestashop']['install_dir'] = 'install'
@@ -26,10 +26,8 @@ default['prestashop']['settings_file'] = 'config/settings.inc.php'
 default['prestashop']['dir_owner'] = 'www-data'
 default['prestashop']['dir_group'] = 'www-data'
 #
-default['prestashop']['old_downloads_url_prefix'] = 'http://www.prestashop.com/download/old/'
+default['prestashop']['old_downloads_url_prefix'] = 'http://www.prestashop.com/download/old'
 default['prestashop']['version'] = '1.6.0.8'
-default['prestashop']['zip_file'] = 'prestashop_' + node['prestashop']['version'] + '.zip'
-default['prestashop']['full_download_url'] = node['prestashop']['old_downloads_url_prefix'] + node['prestashop']['zip_file']
 #
 default['prestashop']['db_server'] = '127.0.0.1'
 default['prestashop']['db_name'] = 'prestashop_db'
