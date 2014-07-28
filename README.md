@@ -100,6 +100,11 @@ When using chef-client executable with an attribute file in JSON format, for exa
 
 Notice that right now there is a (needed) redundancy with some attributes present in the `install_cli_options` hash, like `db_name`. This is because Chef evaluates the attributes values too early and if not rewriteen then some values could be wrong for this cookbook. This is a point to improve for this cookbook.
 
+Testing
+-------
+
+This cookbok needs automated testing, nothing has been incorporated in this respect.
+
 Contributing
 ------------
 
