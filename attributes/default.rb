@@ -27,7 +27,7 @@ default['prestashop']['dir_owner'] = 'www-data'
 default['prestashop']['dir_group'] = 'www-data'
 #
 default['prestashop']['old_downloads_url_prefix'] = 'http://www.prestashop.com/download/old'
-default['prestashop']['version'] = '1.6.0.8'
+default['prestashop']['version'] = '1.6.0.9'
 #
 default['prestashop']['db_server'] = '127.0.0.1'
 default['prestashop']['db_name'] = 'prestashop_db'
@@ -62,9 +62,9 @@ default['prestashop']['install_cli_options'] = {
   'prefix' => node['prestashop']['db_prefix']
 }
 #
-#http://www.prestashop.com/download/lang_packs/gzip/1.6.0.7/es.gzip
+#http://www.prestashop.com/download/lang_packs/gzip/1.6.0.9/es.gzip
 default['prestashop']['translations_url_prefix'] = 'http://www.prestashop.com/download/lang_packs/gzip'
-default['prestashop']['translations'] = {'es' => '1.6.0.7'}
+default['prestashop']['translations'] = {'es' => '1.6.0.9'}
 #
 default['prestashop']['do_cleanup'] = true
 #
