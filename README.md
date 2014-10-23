@@ -8,10 +8,13 @@ Requirements
 The following packages are installed by this cookbook:
 
 - `php5-cli`
+- `php5-gd`
 - `php5-mysql`
 - `tar`
 - `wget`
 - `unzip`
+
+Also the package `php5-mcrypt` will be installed by default, but the user can exclude it.
 
 #### Cookbooks
 
@@ -40,23 +43,24 @@ Attributes
 
 The following attributes are used on automated command line installer that comes with Prestashop:
 
-- node`['prestashop']['domain']` - store URL (default 'www.myprestashop.com')
-- node`['prestashop']['email']` - store admin email (default 'sells@myprestashop.com')
-- node`['prestashop']['password']` - store admin password (default 'V2ryStr4ng_')
-- node`['prestashop']['store_name']` - store name (default 'My_Prestashop')
-- node`['prestashop']['timezone']` - store timezone (default 'America/Caracas')
-- node`['prestashop']['language']` - store main language ISO code (default 'es')
-- node`['prestashop']['country']` - store country (default 've')
-- node`['prestashop']['newsletter']` - send Prestashop newsletter to admin e-mail (1=yes, 0=no. Default '0')
-- node`[prestashop']['install_via_cli']` - do Prestashop installation via CLI (yes/no, default true)
-- node`['prestashop']['install_cli_options']` - several options to use when installing via CLI
+- `node['prestashop']['domain']` - store URL (default 'www.myprestashop.com')
+- `node['prestashop']['email']` - store admin email (default 'sells@myprestashop.com')
+- `node['prestashop']['password']` - store admin password (default 'V2ryStr4ng_')
+- `node['prestashop']['store_name']` - store name (default 'My_Prestashop')
+- `node['prestashop']['timezone']` - store timezone (default 'America/Caracas')
+- `node['prestashop']['language']` - store main language ISO code (default 'es')
+- `node['prestashop']['country']` - store country (default 've')
+- `node['prestashop']['newsletter']` - send Prestashop newsletter to admin e-mail (1=yes, 0=no. Default '0')
+- `node[prestashop']['install_via_cli']` - do Prestashop installation via CLI (yes/no, default true)
+- `node['prestashop']['install_cli_options']` - several options to use when installing via CLI
 
-- node`['prestashop']['translations_url_prefix']` - URL to download several translation files
-- node`['prestashop']['translations']` - ISO codes of language tranlations to download and their associated version
-- node`['prestashop']['do_cleanup']` - clean several unneeded files (yes/no, default true)
-- node`['prestashop']['vhost_name']` - virtual host file name to use when configuring Apache web site
-- node`['prestashop']['use_ssl_with_vhost']` - use SSL in virtual host configuration (yes/no, default false)
-- node`['prestashop']['apache_ssl_params']` - several SSL params used when configuring Apache virtual host
+- `node['prestashop']['translations_url_prefix']` - URL to download several translation files
+- `node['prestashop']['translations']` - ISO codes of language tranlations to download and their associated version
+- `node['prestashop']['do_cleanup']` - clean several unneeded files (yes/no, default true)
+- `node['prestashop']['vhost_name']` - virtual host file name to use when configuring Apache web site
+- `node['prestashop']['use_ssl_with_vhost']` - use SSL in virtual host configuration (yes/no, default false)
+- `node['prestashop']['apache_ssl_params']` - several SSL params used when configuring Apache virtual host
+- `node['prestashop']['with_php5_mcrypt']` - install and enable PHP mcrypt extension (yes/no, default true)
 
 Usage
 -----
@@ -81,6 +85,39 @@ node.default['prestashop']['install_cli_options']['country'] = 'it'
 node.default['prestashop']['install_cli_options']['domain'] = 'www.myotherdomain.com'
 node.default['prestashop']['install_cli_options']['name'] = 'MyAwesomeStore'
 node.default['prestashop']['version'] = '1.5.6.2'
+```
+
+Another example when using it from a wrapper cookbook:
+
+```
+node.default['prestashop']['base_dir'] = '/var/www/awesomestore'
+node.default['prestashop']['db_server'] = '192.168.1.99'
+node.default['prestashop']['db_name'] = 'db_awesome_store'
+node.default['prestashop']['db_user'] = 'db_awesome_user'
+node.default['prestashop']['db_password'] = 'db_awesome_password'
+#
+node.default['prestashop']['install_cli_options'] = {
+  'domain' => 'www.awesomestore.com',
+  'db_user' => 'db_awesome_user',
+  'db_password' => 'db_awesome_password',
+  'db_name' => 'db_awesome_store',
+  'db_prefix' => '',
+  'email' => 'theadmin@awesomestore.com',
+  'password' => 'TheAdminPassword',
+  'name' => 'TheAwesomeStore' # no white spaces
+}
+#
+node.default['prestashop']['vhost_name'] = 'awesomestore'
+node.default['prestashop']['domain'] = 'www.awesomestore.com'
+#
+node.default['prestashop']['use_ssl_with_vhost'] = true
+node.default['prestashop']['apache_ssl_params'] = {
+  'SSLCertificateFile' => '/etc/ssl/certs/awesomestore.com.crt',
+  'SSLCertificateKeyFile' => '/etc/ssl/private/awesomestore.com.key',
+  'SSLCACertificateFile' => '/etc/ssl/certs/AlphaSSL-IntermediateCA.crt'
+}
+#
+include_recipe "prestashop::default"
 ```
 
 When using chef-client executable with an attribute file in JSON format, for example `chef-client -o 'recipe[prestashop]' -j my-file.json`, such JSON file could be like this:
