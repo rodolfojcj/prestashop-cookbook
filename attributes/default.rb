@@ -76,3 +76,7 @@ default['prestashop']['apache_ssl_params'] = {
   '#SSLCertificateChainFile' => '??/etc/ssl/certs/ssl-cert-snakeoil.pem',
   '#SSLCACertificateFile' => '??/etc/ssl/certs/GS_AlphaSSL_CA_bundle.crt'
 }
+#
+# mcrypt usage is optional; it's possible to ignore it
+# see http://www.prestashop.com/forums/topic/252553-fatal-error-call-to-undefined-function-mcrypt-encrypt/
+default['prestashop']['with_php5_mcrypt'] = true

@@ -1,6 +1,10 @@
 prestashop CHANGELOG
 ====================
 
+0.1.2
+-----
+- Fixes
+
 0.1.1
 -----
 - Changed the default base directory where Prestashop will be installed

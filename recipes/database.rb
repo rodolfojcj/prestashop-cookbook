@@ -18,7 +18,6 @@
 #
 
 include_recipe "mysql::server"
-include_recipe "mysql::ruby"
 include_recipe "database"
 
 mysql_connection_info = {

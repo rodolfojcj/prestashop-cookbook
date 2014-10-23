@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: prestashop
-# Recipe:: default
+# Recipe:: php5_mcrypt
 #
 # Copyright 2014, OpenSinergia
 #
@@ -17,8 +17,13 @@
 # limitations under the License.
 #
 
+package 'php5-mcrypt'
 
-include_recipe "prestashop::database" if node['prestashop']['install_db'] == true
-include_recipe "prestashop::php5_mcrypt" if node['prestashop']['with_php5_mcrypt'] == true
-include_recipe "prestashop::install"
-include_recipe "prestashop::apache_vhost"
+bash 'enable-php5-mcrypt-extension' do
+  code '/usr/sbin/php5enmod mcrypt'
+  only_if {
+    ('debian' == node['platform'] && Chef::VersionConstraint.new('>= 7.0').include?(node['platform_version'])) ||
+    ('ubuntu' == node['platform'] && Chef::VersionConstraint.new('>= 12.10').include?(node['platform_version']))
+  }
+  notifies :reload, "service[apache2]", :delayed
+end
