@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: prestashop
-# Recipe:: default
+# Attributes:: presh
 #
 # Copyright 2014, OpenSinergia
 #
@@ -8,7 +8,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,8 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe "prestashop::database" if node['prestashop']['install_db'] == true
-include_recipe "prestashop::php5_mcrypt" if node['prestashop']['with_php5_mcrypt'] == true
-include_recipe "prestashop::install"
-include_recipe "prestashop::apache_vhost"
-include_recipe "prestashop::presh" if node['prestashop']['presh']['enabled'] == true
+default['prestashop']['presh']['enabled'] = false
+default['prestashop']['presh']['base_url'] = 'https://github.com/rodolfojcj/presh/archive/'
+default['prestashop']['presh']['revision'] = 'master'
+default['prestashop']['presh']['install_dir_base'] = '/usr/local/presh'
+default['prestashop']['presh']['install_dir_suffix'] = '-' + node.default['prestashop']['presh']['revision'] 
+default['prestashop']['presh']['keep_updating'] = true
+default['prestashop']['presh']['commands'] = []

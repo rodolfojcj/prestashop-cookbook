@@ -1,6 +1,8 @@
 prestashop Cookbook
 ===================
-Cookbook for installing and configuring Prestashop e-commerce web based solution.
+Cookbook for installing and configuring e-commerce web sites based
+on [Prestashop](http://www.prestashop.com), an Open Source web
+e-commerce solution.
 
 Requirements
 ------------
@@ -25,6 +27,7 @@ Also the package `php5-mcrypt` will be installed by default, but the user can ex
 Attributes
 ----------
 #### prestashop::default
+
 - `node['prestashop']['base_dir']` - directory where Prestashop will be installed (default /var/www/prestashop)
 - `node['prestashop']['default_admin_dir']` - name of default admin directory
 - `node['prestashop']['custom_admin_dir']` - new name for admin directory (default 'store-admin-' + rand(1000..9999).to_s)
@@ -62,6 +65,16 @@ The following attributes are used on automated command line installer that comes
 - `node['prestashop']['apache_ssl_params']` - several SSL params used when configuring Apache virtual host
 - `node['prestashop']['with_php5_mcrypt']` - install and enable PHP mcrypt extension (yes/no, default true)
 
+#### prestashop::presh
+
+- `node['prestashop']['presh']['enabled']` - whether to use or not [Presh](http://github.com/rodolfojcj/presh) (boolean, `false` by default because it is so experimental)
+- `node['prestashop']['presh']['base_url']` - github repository base url to download Presh from (`https://github.com/rodolfojcj/presh/archive/` by default)
+- `node['prestashop']['presh']['revision']` - github repository branch, tag or revision of Presh to use (`master` by default, but it also could be something like `c48cdd316d0c32c4f6958ade91b738b12a1c1330`)
+- `node['prestashop']['presh']['install_dir_base']` - base name of the directory where Presh will be installed in the node (default is `/usr/local/presh`)
+- `node['prestashop']['presh']['install_dir_suffix']` - name suffix of the directory where Presh will be installed in the node (default is the concatenation of a `-` sign and the value of `node.default['prestashop']['presh']['revision']`)
+- `node['prestashop']['presh']['keep_updating']` - whether to re-download a possible new version of Presh from the repository (boolean, `true` by default). No matter which value it has, it only will be useful when the revision used is `master`.
+- `node['prestashop']['presh']['commands']` - array of Presh commands to execute; each entry is a hash with this convention: `name` is a required key pointing to a Presh command and `params` is an optional key pointing to a string of params expected by that command
+
 Usage
 -----
 #### prestashop::default
@@ -75,7 +88,7 @@ Just include `prestashop` in your node's `run_list`:
   ]
 }
 ```
-When using from another cookbook, you can override several attributes according to your needs. For example:
+When using it from another cookbook, you can override several attributes according to your needs. For example:
 
 ```
 node.default['prestashop']['db_name'] = 'my_custom_database'
@@ -120,7 +133,9 @@ node.default['prestashop']['apache_ssl_params'] = {
 include_recipe "prestashop::default"
 ```
 
-When using chef-client executable with an attribute file in JSON format, for example `chef-client -o 'recipe[prestashop]' -j my-file.json`, such JSON file could be like this:
+When using chef-client executable with an attribute file in JSON format, for
+example `chef-client -o 'recipe[prestashop]' -j my-file.json`, such JSON file
+could be like this:
 
 ```
 {
@@ -135,7 +150,35 @@ When using chef-client executable with an attribute file in JSON format, for exa
 }
 ```
 
-Notice that right now there is a (needed) redundancy with some attributes present in the `install_cli_options` hash, like `db_name`. This is because Chef evaluates the attributes values too early and if not rewriteen then some values could be wrong for this cookbook. This is a point to improve for this cookbook.
+Notice that right now there is a (needed) redundancy with some attributes
+present in the `install_cli_options` hash, like `db_name`. This is because Chef
+evaluates the attributes values too early and if not rewritten then some values
+could be wrong for this cookbook. This is a point pending for improvement.
+
+Also notice that `db_prefix` option is ignored or is not working as expected,
+so some debugging will be needed to make it useful. In the meanwhile the
+Prestashop installer will create every table with the `ps_ ` prefix and the
+generated `settings.inc.php` config file will contain that `ps_` prefix too.
+
+If you want to use Presh in your own cookbooks take these lines as an example:
+
+```
+...
+...
+node.default['prestashop']['presh']['enabled'] = true # it is false by default
+node.default['prestashop']['presh']['revision'] = 'c48cdd316d0c32c4f6958ade91b738b12a1c1330' # 'master' is the default value
+node.default['prestashop']['presh']['commands'] = [
+  {'name' => 'set_demo_mode', 'params' => '0'},
+  {'name' => 'set_friendly_urls', 'params' => '1'},
+  {'name' => 'set_debug_settings', 'params' => '0'},
+  {'name' => 'optimize_via_ccc', 'params' => '1'},
+  {'name' => 'fix_mail'}, # fix TLS problems patching some Prestashop core files
+  {'name' => 'set_smtp_mailing', 'params' => 'awesomestore.com mail.awesomestore.com sales@awesomestore.com SalesMailAccountPassword TLS 587'}
+]
+...
+...
+include_recipe "prestashop::default"
+```
 
 Testing
 -------
@@ -145,7 +188,7 @@ This cookbok needs automated testing, nothing has been incorporated in this resp
 Contributing
 ------------
 
-Go to Github, fork it and suggest improvements
+Go to Github, fork it and suggest improvements or submit your issues.
 
 License and Authors
 -------------------

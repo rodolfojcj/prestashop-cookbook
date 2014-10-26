@@ -1,6 +1,10 @@
 prestashop CHANGELOG
 ====================
 
+0.2.0
+-----
+- Inclusion of Presh as a command line tool
+
 0.1.2
 -----
 - Fixes
