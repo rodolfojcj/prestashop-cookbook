@@ -32,7 +32,7 @@ bash 'get-presh-from-github' do
     unzip -o #{downloaded_file_name}
     rm -rf #{install_dir}
     mv #{downloaded_directory} #{install_dir}
-    chmod +x #{install_dir}/presh
+    chmod 755 #{install_dir}presh
   EOH
   only_if {
     keep_updating = node.default['prestashop']['presh']['keep_updating']

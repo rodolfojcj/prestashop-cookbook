@@ -1,6 +1,10 @@
 prestashop CHANGELOG
 ====================
 
+0.2.2
+-----
+- Fix in file path
+
 0.2.1
 -----
 - Fix in the way of downloading Presh
