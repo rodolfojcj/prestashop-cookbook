@@ -24,11 +24,11 @@ revision = node.default['prestashop']['presh']['revision']
 bash 'get-presh-from-github' do
   download_url = node.default['prestashop']['presh']['base_url'] +
     node.default['prestashop']['presh']['revision'] + '.zip'
-  downloaded_file_name = revision + '.zip'
+  downloaded_file_name = 'presh-' + revision + '.zip'
   # downloaded_directory will contain our target directory (e.g presh-master)
   downloaded_directory = 'presh-' + node.default['prestashop']['presh']['revision']
   code <<-EOH
-    wget --quiet #{download_url}
+    wget --continue --quiet #{download_url} --output-document=#{downloaded_file_name}
     unzip -o #{downloaded_file_name}
     rm -rf #{install_dir}
     mv #{downloaded_directory} #{install_dir}

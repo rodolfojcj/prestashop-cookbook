@@ -41,11 +41,12 @@ already_installed = File.exists?(settings_file)
 bash 'get-prestashop-core' do
   user node['prestashop']['dir_owner']
   group node['prestashop']['dir_group']
+  download_file = 'prestashop_' + node['prestashop']['version'] + '.zip'
   code <<-EOH
     tmp_dir=$(mktemp -d)
     cd $tmp_dir
-    wget --quiet #{node['prestashop']['old_downloads_url_prefix']}/prestashop_#{node['prestashop']['version']}.zip
-    unzip -o prestashop_#{node['prestashop']['version']}.zip
+    wget --quiet #{node['prestashop']['old_downloads_url_prefix']}/prestashop_#{node['prestashop']['version']}.zip --output-document=#{download_file}
+    unzip -o #{download_file}
     # no hidden files downloaded, so it is safe to use mv
     mv prestashop/* #{base_dir}
     mv #{default_admin_dir} #{custom_admin_dir}
