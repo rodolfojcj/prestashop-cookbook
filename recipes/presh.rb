@@ -33,6 +33,7 @@ bash 'get-presh-from-github' do
     rm -rf #{install_dir}
     mv #{downloaded_directory} #{install_dir}
     chmod 755 #{install_dir}presh
+    rm -f #{downloaded_file_name}
   EOH
   only_if {
     keep_updating = node.default['prestashop']['presh']['keep_updating']
@@ -41,6 +42,8 @@ bash 'get-presh-from-github' do
 end
 
 bash 'apply-presh-commands' do
+  user node['prestashop']['dir_owner']
+  group node['prestashop']['dir_group']
   presh_exec = install_dir + 'presh'
   bash_commands = ''
   node.default['prestashop']['presh']['commands'].each do |command|
