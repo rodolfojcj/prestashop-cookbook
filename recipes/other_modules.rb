@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: prestashop
-# Recipe:: default
+# Recipe:: other_modules
 #
 # Copyright 2014, OpenSinergia
 #
@@ -17,11 +17,17 @@
 # limitations under the License.
 #
 
-include_recipe "prestashop::database" if node['prestashop']['install_db'] == true
-include_recipe "prestashop::php5_mcrypt" if node['prestashop']['with_php5_mcrypt'] == true
-include_recipe "prestashop::php5_imap" if node['prestashop']['need_imap_for_service_client'] == true
-include_recipe "prestashop::install"
-include_recipe "prestashop::apache_vhost"
-include_recipe "prestashop::other_modules"
-include_recipe "prestashop::piwik" if node['prestashop']['other_modules']['get_piwik'] == true
-include_recipe "prestashop::presh" if node['prestashop']['presh']['enabled'] == true
+modules_dir = ::File.join(node['prestashop']['base_dir'], 'modules')
+
+package "git" if node['prestashop']['other_modules']['via_git'].size > 0
+
+#
+node['prestashop']['other_modules']['via_git'].each do |ps_module|
+  git ::File.join(modules_dir, ps_module['name']) do
+    user node['prestashop']['dir_owner']
+    group node['prestashop']['dir_group']
+    repository ps_module['url']
+    revision ps_module['rev']
+    action :sync
+  end
+end

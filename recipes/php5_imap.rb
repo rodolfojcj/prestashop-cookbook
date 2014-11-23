@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: prestashop
-# Recipe:: default
+# Recipe:: php5_imap
 #
 # Copyright 2014, OpenSinergia
 #
@@ -17,11 +17,13 @@
 # limitations under the License.
 #
 
-include_recipe "prestashop::database" if node['prestashop']['install_db'] == true
-include_recipe "prestashop::php5_mcrypt" if node['prestashop']['with_php5_mcrypt'] == true
-include_recipe "prestashop::php5_imap" if node['prestashop']['need_imap_for_service_client'] == true
-include_recipe "prestashop::install"
-include_recipe "prestashop::apache_vhost"
-include_recipe "prestashop::other_modules"
-include_recipe "prestashop::piwik" if node['prestashop']['other_modules']['get_piwik'] == true
-include_recipe "prestashop::presh" if node['prestashop']['presh']['enabled'] == true
+package 'php5-imap'
+
+bash 'enable-php5-imap-extension' do
+  code '/usr/sbin/php5enmod imap'
+  only_if {
+    ('debian' == node['platform'] && Chef::VersionConstraint.new('>= 7.0').include?(node['platform_version'])) ||
+    ('ubuntu' == node['platform'] && Chef::VersionConstraint.new('>= 12.10').include?(node['platform_version']))
+  }
+  notifies :reload, "service[apache2]", :delayed
+end

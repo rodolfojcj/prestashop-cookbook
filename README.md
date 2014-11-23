@@ -64,6 +64,9 @@ The following attributes are used on automated command line installer that comes
 - `node['prestashop']['use_ssl_with_vhost']` - use SSL in virtual host configuration (yes/no, default false)
 - `node['prestashop']['apache_ssl_params']` - several SSL params used when configuring Apache virtual host
 - `node['prestashop']['with_php5_mcrypt']` - install and enable PHP mcrypt extension (yes/no, default true)
+- `node['prestashop']['need_imap_for_service_client']` - whether to install and configure php IMAP extension (boolean, true by default)
+- `node['prestashop']['other_modules']['via_git']` - array of hashes, where each entry contains the details to get a remote Prestashop module via Git
+- `node['prestashop']['other_modules']['get_piwik']` - whether to get the Piwik module for web analytics (boolean, false by default)
 
 #### prestashop::presh
 
@@ -75,8 +78,22 @@ The following attributes are used on automated command line installer that comes
 - `node['prestashop']['presh']['keep_updating']` - whether to re-download a possible new version of Presh from the repository (boolean, `true` by default). No matter which value it has, it only will be useful when the revision used is `master`.
 - `node['prestashop']['presh']['commands']` - array of Presh commands to execute; each entry is a hash with this convention: `name` is a required key pointing to a Presh command and `params` is an optional key pointing to a string of params expected by that command
 
+Recipes
+-------
+
+- `prestashop::default`: main and simple recipe, just invokes the other recipes (conditionally in some cases)
+- `prestashop::apache_vhost`: sets the web virtual host and includes some Apache modules
+- `prestashop::database`: sets the MySql database for the Prestashop site
+- `prestashop::install`: installs Prestashop
+- `prestashop::other_modules`: offers the option of getting modules not available in the Prestashop Addons. Only via Git at this moment is supported
+- `prestashop::php5_imap`: installs php5 IMAP extension and enables it (only in Debian >= 7.0 or Ubuntu >= 12.10)
+- `prestashop::php5_mcrypt`: installs php5 mcrypt extension and enables it (only in Debian >= 7.0 or Ubuntu >= 12.10)
+- `prestashop::piwik`: installs Piwik module for Prestashop. It depends on Subversion to get the code from GitHub (it's kind of weird, but it works)
+- `prestashop::presh`: installs Presh and applies all the commands present in node['prestashop']['presh']['commands']
+
 Usage
 -----
+
 #### prestashop::default
 Just include `prestashop` in your node's `run_list`:
 
@@ -180,6 +197,23 @@ node.default['prestashop']['presh']['commands'] = [
 include_recipe "prestashop::default"
 ```
 
+An example including a useful module via Git is to include the awesome [Minic Slider from Minic Studio](http://module.minic.ro/tag/slider/):
+
+```
+...
+...
+node.default['prestashop']['other_modules']['via_git'] = [
+  {
+    'name' => 'minicslider',
+    'url' => 'git://github.com/minicstudio/minicslider.git',
+    'rev' => 'master'
+  }
+]
+...
+...
+include_recipe "prestashop::default"
+```
+
 Testing
 -------
 
@@ -192,4 +226,4 @@ Go to Github, fork it and suggest improvements or submit your issues.
 
 License and Authors
 -------------------
-Author: Rodolfo Castellanos (rodolfojcj at yahoo.com)
+Author: Rodolfo Castellanos

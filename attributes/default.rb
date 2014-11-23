@@ -80,3 +80,7 @@ default['prestashop']['apache_ssl_params'] = {
 # mcrypt usage is optional; it's possible to ignore it
 # see http://www.prestashop.com/forums/topic/252553-fatal-error-call-to-undefined-function-mcrypt-encrypt/
 default['prestashop']['with_php5_mcrypt'] = true
+default['prestashop']['need_imap_for_service_client'] = true
+#
+default['prestashop']['other_modules']['via_git'] = []
+default['prestashop']['other_modules']['get_piwik'] = false
