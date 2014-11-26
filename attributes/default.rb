@@ -29,7 +29,7 @@ default['prestashop']['old_downloads_url_prefix'] = 'http://www.prestashop.com/d
 default['prestashop']['version'] = '1.6.0.9'
 #
 default['prestashop']['db_server_host'] = '127.0.0.1'
-default['prestashop']['db_server_port'] = '127.0.0.1'
+default['prestashop']['db_server_port'] = '3306'
 default['prestashop']['db_name'] = 'prestashop_db'
 default['prestashop']['db_user'] = 'prestashop_user'
 default['prestashop']['db_password'] = 'V2ryD3ff3c5lt_'
