@@ -21,6 +21,5 @@ default['prestashop']['presh']['enabled'] = false
 default['prestashop']['presh']['base_url'] = 'https://github.com/rodolfojcj/presh/archive/'
 default['prestashop']['presh']['revision'] = 'master'
 default['prestashop']['presh']['install_dir_base'] = '/usr/local/presh'
-default['prestashop']['presh']['install_dir_suffix'] = '-' + node.default['prestashop']['presh']['revision'] 
+default['prestashop']['presh']['install_dir_suffix'] = '-' + node['prestashop']['presh']['revision'] 
 default['prestashop']['presh']['keep_updating'] = true
-default['prestashop']['presh']['commands'] = []

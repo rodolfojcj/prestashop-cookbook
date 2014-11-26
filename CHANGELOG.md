@@ -1,6 +1,16 @@
 prestashop CHANGELOG
 ====================
 
+0.4.0
+-----
+- Refactoring: now definitions are used instead of recipes to do the hard work.
+This will allow to reuse the cookbook to install one or more Prestashop sites
+within the same node, having each site its own params and details
+
+0.3.0
+-----
+- Some enhancements to use php5 IMAP extension, download modules via Git, include Piwik module (needs Subversion)
+
 0.2.2
 -----
 - Fix in file path
