@@ -82,6 +82,7 @@ admin_dir = 'secret-admin-dir'
 store_name = '"My Prestashop!"'
 app_name = 'myprestashop'
 domain = 'www.myprestashop.com'
+aliases = ['myprestashop.com', 'awesomestore.com']
 site_dir = '/var/www/myprestashop'
 ssl_params = {
   'SSLCertificateFile' => '/etc/ssl/certs/myprestashop/myprestashop.crt',
@@ -136,6 +137,7 @@ prestashop_apache_vhost do
   use_ssl_with_vhost true
   app_name app_name
   app_domain domain
+  app_aliases aliases
   base_dir site_dir
   ssl_params ssl_params
 end

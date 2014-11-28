@@ -1,5 +1,8 @@
 <VirtualHost *:80>
   ServerName <%= @params[:server_name] %>
+<% if @params[:server_aliases] -%>
+  ServerAlias <%= @params[:server_aliases].join " " %>
+<% end -%>
   DocumentRoot <%= @params[:docroot] %>
   ServerSignature Off
 
@@ -15,6 +18,9 @@
 <IfModule mod_ssl.c>
 <VirtualHost *:443>
   ServerName <%= @params[:server_name] %>
+<% if @params[:server_aliases] -%>
+  ServerAlias <%= @params[:server_aliases].join " " %>
+<% end -%>
   DocumentRoot <%= @params[:docroot] %>
   ServerSignature Off
 
