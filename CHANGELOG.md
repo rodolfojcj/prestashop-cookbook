@@ -7,6 +7,8 @@ prestashop CHANGELOG
 This will allow to reuse the cookbook to install one or more Prestashop sites
 within the same node, having each site its own params and details
 - Refactoring in the virtual host configuration files
+- New params in Apache definition to prevent the access to .git directories
+or .gitignore files. They are enabled by default, but can be disabled if needed
 
 0.3.0
 -----

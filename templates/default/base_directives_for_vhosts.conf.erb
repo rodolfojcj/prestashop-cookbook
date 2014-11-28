@@ -9,4 +9,11 @@
     AllowOverride All
   </Directory>
 
+<% if @params[:apply_bogus_redirect_for_git_paths] == true -%>
+  RedirectMatch 404 /\.git
+<% end -%>
+<% if @params[:set_top_404_error_document] == true -%>
+  ErrorDocument 404 /index.php?controller=404
+<% end -%>
+
   LogLevel info
