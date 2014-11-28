@@ -17,10 +17,9 @@
 # limitations under the License.
 #
 
-define :prestashop_apache_vhost, :use_ssl_with_vhost => false,
-    :app_name => nil, :app_domain => nil, :base_dir => nil,
-    :template => 'apache_vhost.conf.erb', :ssl_params => nil,
-    :ssl_template => 'apache_vhost_ssl.conf.erb', :app_aliases => nil,
+define :prestashop_apache_vhost, :app_name => nil, :app_domain => nil,
+    :base_dir => nil, :template => 'apache_vhost.conf.erb',
+    :ssl_params => nil, :app_aliases => nil,
     :templates_cookbook => 'prestashop', :log_dir => nil do
 
   params[:app_name] = params[:app_name] || node['prestashop']['vhost_name']
@@ -38,16 +37,13 @@ define :prestashop_apache_vhost, :use_ssl_with_vhost => false,
     server_aliases dup_params[:app_aliases] if dup_params[:app_aliases] && !dup_params[:app_aliases].join.empty?
     docroot dup_params[:base_dir]
     cookbook dup_params[:templates_cookbook]
-    template params[:template] if dup_params[:use_ssl_with_vhost] == false
-    if dup_params[:use_ssl_with_vhost] == true
-      template dup_params[:ssl_template]
-      ssl_params dup_params[:ssl_params]
-    end
+    template dup_params[:template]
+    ssl_params dup_params[:ssl_params]
     log_dir dup_params[:log_dir]
   end
 
   include_recipe "apache2"
   include_recipe "apache2::mod_php5"
   include_recipe "apache2::mod_rewrite"
-  include_recipe "apache2::mod_ssl" if params[:use_ssl_with_vhost] == true
+  include_recipe "apache2::mod_ssl" if params[:ssl_params].size > 0
 end

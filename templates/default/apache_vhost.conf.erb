@@ -1,16 +1,21 @@
+# normal http access
 <VirtualHost *:80>
-  ServerName <%= @params[:server_name] %>
-<% if @params[:server_aliases] -%>
-  ServerAlias <%= @params[:server_aliases].join " " %>
-<% end -%>
-  DocumentRoot <%= @params[:docroot] %>
-  ServerSignature Off
-
-  <Directory <%= @params[:docroot] %>>
-    AllowOverride All
-  </Directory>
-
-  LogLevel info
+<%= render "base_directives_for_vhosts.conf.erb", :cookbook => 'prestashop' %>
   ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
   CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
 </VirtualHost>
+<% if @params[:ssl_params] && @params[:ssl_params].size > 0 -%>
+# secure https access
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+<%= render "base_directives_for_vhosts.conf.erb", :cookbook => 'prestashop' %>
+  ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-error.log
+  CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-access.log combined
+
+  SSLEngine On
+<% @params[:ssl_params].each do |param, value| -%>
+  <%= param %> <%= value %>
+<% end -%>
+</VirtualHost>
+</IfModule>
+<% end -%>

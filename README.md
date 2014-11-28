@@ -134,7 +134,6 @@ prestashop_install do
 end
 
 prestashop_apache_vhost do
-  use_ssl_with_vhost true
   app_name app_name
   app_domain domain
   app_aliases aliases

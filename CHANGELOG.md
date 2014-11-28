@@ -6,6 +6,7 @@ prestashop CHANGELOG
 - Refactoring: now definitions are used instead of recipes to do the hard work.
 This will allow to reuse the cookbook to install one or more Prestashop sites
 within the same node, having each site its own params and details
+- Refactoring in the virtual host configuration files
 
 0.3.0
 -----
