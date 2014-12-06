@@ -45,7 +45,6 @@ Attributes
 - `node['prestashop']['db_prefix']` - prestashop database tables prefix (default '')
 - `node['prestashop']['domain']` - store URL (default 'www.myprestashop.com')
 - `node['prestashop']['translations_url_prefix']` - URL to download several translation files
-- `node['prestashop']['translations']` - ISO codes of language tranlations to download and their associated version
 - `node['prestashop']['vhost_name']` - virtual host file name to use when configuring Apache web site
 - `node['prestashop']['with_php5_mcrypt']` - install and enable PHP mcrypt extension (yes/no, default true)
 - `node['prestashop']['need_imap_for_service_client']` - whether to install and configure php IMAP extension (boolean, true by default)
@@ -130,6 +129,7 @@ prestashop_install do
   base_dir site_dir
   custom_admin_dir admin_dir
   version '1.6.0.8'
+  langs_iso_codes ['es', 'it', 'de']
   install_cli_options install_cli_options
 end
 

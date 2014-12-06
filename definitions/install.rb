@@ -19,7 +19,7 @@
 
 define :prestashop_install, :base_dir => nil, :dir_owner => nil,
     :dir_group => nil, :default_admin_dir => nil, :custom_admin_dir => nil,
-    :install_dir => nil, :version => nil, :translations => nil,
+    :install_dir => nil, :version => nil, :langs_iso_codes => nil,
     :install_cli_options => nil, :install_via_cli => true,
     :do_cleanup => true do
 
@@ -30,7 +30,7 @@ define :prestashop_install, :base_dir => nil, :dir_owner => nil,
   params[:custom_admin_dir] = params[:custom_admin_dir] || 'store-admin-' + rand(1000..9999).to_s
   params[:install_dir] = params[:install_dir] || node['prestashop']['install_dir']
   params[:version] = params[:version] || node['prestashop']['version']
-  params[:translations] = params[:translations] || node['prestashop']['translations']
+  params[:langs_iso_codes] = params[:langs_iso_codes] || []
   params[:install_cli_options] = params[:install_cli_options] || node['prestashop']['install_cli_options']
 
   default_admin_dir = ::File.join(params[:base_dir], params[:default_admin_dir])
@@ -75,9 +75,9 @@ define :prestashop_install, :base_dir => nil, :dir_owner => nil,
     group params[:dir_group]
     cwd params[:base_dir]
     bash_commands = ''
-    params[:translations].each { |lang, version|
+    params[:langs_iso_codes].each { |lang|
       bash_commands << <<-EOH
-        wget --quiet -O - #{node['prestashop']['translations_url_prefix']}/#{version}/#{lang}.gzip | tar xzf -
+        wget --quiet -O - #{node['prestashop']['translations_url_prefix']}/#{params[:version]}/#{lang}.gzip | tar xzf -
       EOH
     }
     code bash_commands

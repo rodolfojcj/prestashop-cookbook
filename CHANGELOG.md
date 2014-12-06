@@ -1,6 +1,11 @@
 prestashop CHANGELOG
 ====================
 
+0.4.1
+-----
+- Fix in the way of getting translations
+- Fix in the virtual host configuration for Apache 2.2 or 2.4
+
 0.4.0
 -----
 - Refactoring: now definitions are used instead of recipes to do the hard work.

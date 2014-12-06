@@ -39,7 +39,6 @@ default['prestashop']['domain'] = 'www.myprestashop.com'
 #
 #http://www.prestashop.com/download/lang_packs/gzip/1.6.0.9/es.gzip
 default['prestashop']['translations_url_prefix'] = 'http://www.prestashop.com/download/lang_packs/gzip'
-default['prestashop']['translations'] = {'es' => '1.6.0.9'}
 #
 default['prestashop']['vhost_name'] = 'myprestashop'
 # mcrypt usage is optional; it's possible to ignore it
