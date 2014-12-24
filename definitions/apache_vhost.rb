@@ -19,7 +19,7 @@
 
 define :prestashop_apache_vhost, :app_name => nil, :app_domain => nil,
     :base_dir => nil, :template => 'apache_vhost.conf.erb',
-    :ssl_params => nil, :app_aliases => nil,
+    :ssl_params => nil, :app_aliases => nil, :redirect_aliases => true,
     :apply_bogus_redirect_for_git_paths => true,
     :set_top_404_error_document => true,
     :templates_cookbook => 'prestashop', :log_dir => nil do
@@ -37,6 +37,7 @@ define :prestashop_apache_vhost, :app_name => nil, :app_domain => nil,
   web_app params[:app_name] do
     server_name dup_params[:app_domain]
     server_aliases dup_params[:app_aliases] if dup_params[:app_aliases] && !dup_params[:app_aliases].join.empty?
+    redirect_aliases dup_params[:redirect_aliases]
     docroot dup_params[:base_dir]
     cookbook dup_params[:templates_cookbook]
     template dup_params[:template]

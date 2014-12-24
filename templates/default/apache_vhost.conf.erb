@@ -4,10 +4,22 @@
   ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
   CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
 </VirtualHost>
+<% if @params[:server_aliases] && @params[:redirect_aliases] == true -%>
+<VirtualHost *:80>
+  # http://blog.fosketts.net/2010/08/01/force-apache-redirect-canonical-hostnames-serveralias-friend/
+  # http://wowtutorial.org/tutorial/315.html
+  ServerName <%= @params[:server_aliases].first %>
+<% if @params[:server_aliases].size > 1 -%>
+  ServerAlias <%= @params[:server_aliases].drop(1).join " " %>
+  RedirectMatch permanent (.*) http://<%= @params[:server_name] %>$1
+<% end -%>
+</VirtualHost>
+<% end -%>
 <% if @params[:ssl_params] && @params[:ssl_params].size > 0 -%>
 # secure https access
 <IfModule mod_ssl.c>
 <VirtualHost *:443>
+  # NOTE: ServerAlias doesn't seem appropriate for SSL certificates
 <%= render "base_directives_for_vhosts.conf.erb", :cookbook => 'prestashop' %>
   ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-error.log
   CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-access.log combined

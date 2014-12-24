@@ -137,6 +137,9 @@ prestashop_apache_vhost do
   app_name app_name
   app_domain domain
   app_aliases aliases
+  # redirect_aliases is true by default
+  # redirect_aliases true # use permanent 301 redirections for domain aliases
+  # redirect_aliases false # use ServerAlias for domain aliases
   base_dir site_dir
   ssl_params ssl_params
 end

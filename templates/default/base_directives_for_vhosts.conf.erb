@@ -1,5 +1,5 @@
   ServerName <%= @params[:server_name] %>
-<% if @params[:server_aliases] -%>
+<% if @params[:server_aliases] && @params[:redirect_aliases] != true -%>
   ServerAlias <%= @params[:server_aliases].join " " %>
 <% end -%>
   DocumentRoot <%= @params[:docroot] %>

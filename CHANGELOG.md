@@ -1,6 +1,11 @@
 prestashop CHANGELOG
 ====================
 
+0.4.2
+-----
+- Make possible to use permanent (301) redirections in Apache
+virtual host configuration for the website
+
 0.4.1
 -----
 - Fix in the way of getting translations
